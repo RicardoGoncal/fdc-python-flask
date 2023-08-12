@@ -1,0 +1,88 @@
+{% extends 'base.html' %}
+
+<style>
+    /* Estilização adicional para centralizar o formulário */
+    .center-form {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh; /* Ajusta a altura conforme necessário */
+    }
+</style>
+
+{% block content %}
+    <h1 class="container center-form">Network </h1>
+
+    <div class="container center-form">
+        <form action="" method="POST" class="row g-3">
+            <div class="col-md-6">
+                <label for="inputPPM" class="form-label">Project PPM ID: </label>
+                <input type="text" class="form-control" id="inputPPM">
+            </div>
+            <div class="col-md-6">
+                <label for="inputTypeCust" class="form-label">Type of PEP/Cost Center:</label>
+                <select id="inputTypeCust" class="form-select">
+                <option selected>...</option>
+                <option>CAPEX</option>
+                <option>OPEX</option>
+                </select>
+            </div>
+            <div class="col-md-6">
+                <label for="inputProjectDemandName" class="form-label">Project/Demand Name: </label>
+                <input type="text" class="form-control" id="inputProjectDemandName" placeholder="Activity Description">
+            </div>
+            <div class="col-md-6">
+                <label for="inputDemandPEPCC" class="form-label">Demand PEP/Cost Center: </label>
+                <input type="text" class="form-control" id="inputDemandPEPCC" placeholder="PEP or CC">
+            </div>
+            <div class="col-md-6">
+                <label for="inputManager" class="form-label">Project/Demand Manager: </label>
+                <input type="text" class="form-control" id="inputManager" placeholder="E-mail of PM or Requestor">
+            </div>
+             <div class="col-md-6">
+                <label for="inputArchitect" class="form-label">Solution Architect: </label>
+                <input type="text" class="form-control" id="inputArchitect" placeholder="Architect E-mail">
+            </div>
+            <div class="col-md-6">
+                <label for="inputEntityResposible" class="form-label">Iron entity responsible for payment:</label>
+                <select id="inputEntityResposible" class="form-select">
+                <option selected>...</option>
+                <option>Iron S.A</option>
+                <option>Iron Fundation</option>
+                </select>
+            </div>
+            <div class="col-md-6">
+                <label for="inputItOt" class="form-label">Does the demand affect IT or OT?</label>
+                <select id="inputItOt" class="form-select">
+                <option selected>...</option>
+                <option>IT</option>
+                <option>OT</option>
+                </select>
+            </div>
+            <div class="col-12">
+                <label for="inputSpecialReq" class="form-label">Does the demand support any special requirement?</label>
+                <select id="inputSpecialReq" class="form-select">
+                <option selected>Choose...</option>
+                <option>...</option>
+                </select>
+            </div>
+            <div class="col-12">
+                <label for="inputHelpText" class="form-label">Help us better understand your demand: </label>
+                <textarea class="form-control" id="inputHelpText" rows="3">...</textarea>
+            </div>
+            
+
+
+            <div class="col-12">
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </div>
+        </form>
+    </div>
+    
+{% endblock %}
+
+
+
+
+
+

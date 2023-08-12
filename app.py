@@ -2,6 +2,7 @@ from flask import Flask, jsonify, url_for
 from flask_migrate import Migrate
 from general.homepage import blp as HomeBlueprint
 from cloud.cloud import blp as CloudBlueprint
+from network.network import blp as NetworkBlueprint
 
 from db import db
 import os
@@ -28,5 +29,6 @@ def create_app(db_url=None):
 
     app.register_blueprint(CloudBlueprint)
     app.register_blueprint(HomeBlueprint)
+    app.register_blueprint(NetworkBlueprint)
   
     return app
