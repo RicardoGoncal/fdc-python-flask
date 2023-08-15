@@ -60,35 +60,6 @@
                 <option>OT</option>
                 </select>
             </div>
-            <!-- Fim dados comuns dos usuarios -->
-            <!-- Inicio da parte de dados para area de Cloud -->
-            <div class="container">
-                <label for="labelcheckbox" class="form-label">Create a new Resource Group?</label><br>
-                <input class="form-check-input" type="radio" id="radioRgYes" name="choice" value="Yes">
-                <label class="form-check-label" for="radioRgYes">
-                    Yes
-                </label>
-                <input class="form-check-input" type="radio" id="radioRgNo" name="choice" value="No">
-                <label class="form-check-label" for="radioRgNo">
-                    No
-                </label>
-            </div>
-            
-
-            <!-- De acordo com a escolha do Radio Button o HTML vai mudar com um script basico em Javascript -->
-            <div id="radioRgResult" class="mt-3">
-                <!-- Aqui o script dinamico vai alocar o codigo html para alterar a pagina -->
-            </div>
-
-          
-            
-            
-            <!-- Fim da parte de dados para area de Cloud -->
-
-
-
-
-
             <div class="col-12">
                 <label for="inputSpecialReq" class="form-label">Does the demand support any special requirement?</label>
                 <select id="inputSpecialReq" class="form-select">
@@ -100,8 +71,75 @@
                 <label for="inputHelpText" class="form-label">Help us better understand your demand: </label>
                 <textarea class="form-control" id="inputHelpText" rows="3">...</textarea>
             </div>
-            
+            <!-- Fim dados comuns dos usuarios -->
 
+            <!-- Inicio da parte de dados para area de Cloud -->
+            <div class="container">
+                <label for="labelRadioRg" class="form-label">Create a new Resource Group?</label><br>
+                <input class="form-check-input" type="radio" id="radioRgYes" name="choice" value="Yes">
+                <label class="form-check-label" for="radioRgYes">
+                    Yes
+                </label>
+                <input class="form-check-input" type="radio" id="radioRgNo" name="choice" value="No">
+                <label class="form-check-label" for="radioRgNo">
+                    No
+                </label>
+            </div>
+            
+            <!-- De acordo com a escolha do Radio Button o HTML vai mudar com um script basico em Javascript -->
+            <div id="radioRgResult" class="col-md-12">
+                <!-- Aqui o script dinamico vai alocar o codigo html para alterar a pagina -->
+            </div>
+            
+            <div class="container">
+                <label for="labelRadioSp" class="form-label">Will your resource group require a Service Principal?</label><br>
+                <input class="form-check-input" type="radio" id="radioSpYes" name="options1" value="Yes">
+                <label class="form-check-label" for="radioSpYes">
+                    Yes
+                </label>
+                <input class="form-check-input" type="radio" id="radioSpNo" name="options1" value="No">
+                <label class="form-check-label" for="radioSpNo">
+                    No
+                </label>
+            </div>
+            <div class="col-md-6">
+                <label for="inputHLD" class="form-label">Link to the High Level Design (HLD) on LeanIX: </label>
+                <input type="text" class="form-control" id="inputHLD" placeholder="Insert Link HLD">
+            </div>
+            <div class="col-md-6">
+                <label for="inputFunctionArea" class="form-label">Functional Area - Subscription </label>
+                <select id="inputFunctionArea" class="form-select">
+                <option selected>...</option>
+                <option>General</option>
+                <option>Brazil</option>
+                <option>EUA</option>
+                </select>
+            </div>
+            <div class="col-md-6">
+                <label for="inputAzureResources" class="form-label">Azure Resources </label>
+                <select id="inputAzureResources" class="form-select">
+                <option selected>...</option>
+                <option>VM</option>
+                <option>WEB APP</option>
+                <option>SQL</option>
+                </select>
+            </div>
+            <div class="container">
+                <label for="labelRadioInternet" class="form-label">Will your resources require internet access?</label><br>
+                <input class="form-check-input" type="radio" id="radioInternetYes" name="options2" value="Yes">
+                <label class="form-check-label" for="radioInternetYes">
+                    Yes
+                </label>
+                <input class="form-check-input" type="radio" id="radioInternetNo" name="options2" value="No">
+                <label class="form-check-label" for="radioInternetNo">
+                    No
+                </label>
+            </div>
+            <div class="col-12">
+                <label for="inputDescribeConfig" class="form-label">Describe the configurations of resources above and access management </label>
+                <textarea class="form-control" id="inputDescribeConfig" rows="3">...</textarea>
+            </div>
+            <!-- Fim da parte de dados para area de Cloud -->
 
             <div class="col-12">
                 <button type="submit" class="btn btn-primary">Submit</button>
@@ -116,33 +154,142 @@
         
         choiceRadios.forEach(radio => {
             radio.addEventListener('change', () => {
-                resultDiv.innerHTML = ''; // Limpa o conteúdo anterior
+                // resultDiv.innerHTML = ''; // Limpa o conteúdo anterior
 
-                if (radio.value === 'Yes'){
+                if (radio.value === 'Yes' && radio.id === "radioRgYes"){
+
+                    resultDiv.innerHTML = ''; // Limpa o conteúdo anterior
+
+                    // Lista de itens para campos de texto
+                    const camposDict = [
+                        {label: "E-mails of users that need access to the new Resource Group: ", type: "text", class:"form-control",
+                         id: "inputNeedUsersAccess", placeholder:"Put all the e-mails separeted by commas (,)"},
+                        {label: "Project Name (One Word Only)", type: "text", class:"form-control", id: "inputProjectName", placeholder:"Use only letters, numbers and -"},
+                        {label: "Responsible for resources created (e-mail)", type: "text", class:"form-control", id: "inputResponsible", placeholder:"Responsible of the resources"},
+                    ];
+
+                    // Lista para itens do Select
+                    const camposOption = [
+                        {label:"Worload Type", 
+                         class:"form-select",
+                         id:"inputWorkType",
+                         valores: [ {value: "Lab/Poc", text: "Lab/Poc"},
+                                    {value: "Dev", text:"Dev"},
+                                    {value: "QA", text:"QA"}]
+                        },
+                        {label:"Resource's region", 
+                         class:"form-select",
+                         id:"inputRegion",
+                         valores: [ {value: "Lab/Poc", text: "Lab/Poc"},
+                                    {value: "Dev", text:"Dev"},
+                                    {value: "QA", text:"QA"}]
+                        },
+                    ];
                     
+                    // Lista para itens Radio
+                    const camposRadio = [
+                        {value: 'Need To Transition', label: 'Need To Transition' },
+                        {value: 'Do not Transition', label: 'Do not Transition' }
+                    ];
+
+                    // Laço para criar itens de texto
+                    camposDict.forEach(item => {
+                        // Criacao do label
+                        const label = document.createElement('label');
+                        label.textContent = item.label;
+                        // Criacao do campo 
+                        const inputField = document.createElement('input');
+                        inputField.setAttribute('id', item.id);
+                        inputField.setAttribute('type', item.type);
+                        inputField.setAttribute('class', item.class);
+                        inputField.setAttribute('placeholder', item.placeholder);
+                        resultDiv.appendChild(label);
+                        resultDiv.appendChild(inputField);
+                    });
+                    
+                    // Laço para criar itens de Select
+                    camposOption.forEach(item => {
+
+                        // Criacao do label
+                        const label = document.createElement('label');
+                        label.textContent = item.label;
+                        // Criacao do item select
+                        const select = document.createElement('select');
+                        select.setAttribute('id', item.id);
+                        select.setAttribute('class', item.class);
+                        // Criacao das opcoes do select
+                        item.valores.forEach(option => {
+                            const optionElements = document.createElement('option');
+                            optionElements.value = option.value;
+                            optionElements.textContent = option.text;
+                            select.appendChild(optionElements)
+                        })
+                        resultDiv.appendChild(label);
+                        resultDiv.appendChild(select);
+                    });
+                    
+                    // Criar Radio 
+                    resultDiv.appendChild(document.createElement('br'));
+                    const radioContainer = document.createElement('div');
+                    radioContainer.setAttribute = ("class", "container");
+
+                    const label = document.createElement('label');
+                    label.textContent = "Transition Status";
+                    label.class = "form-label";
+                    resultDiv.appendChild(label);
+                    resultDiv.appendChild(document.createElement('br'));
+
+                    camposRadio.forEach(item => {
+                        const radioLabel = document.createElement('label');
+                        radioLabel.textContent = item.label;
+                        radio.class = "form-check-label";
+
+                        const radioButton = document.createElement('input');
+                        radioButton.type = "radio";
+                        radioButton.name = "options3";
+                        radioButton.class = "form-check-input";
+                        radioButton.value = item.value;
+
+                        radioContainer.appendChild(radioButton);
+                        radioContainer.appendChild(radioLabel);
+                        radioContainer.appendChild(document.createElement('br'));
+                        resultDiv.appendChild(radioContainer);
+                        
+                    });
+
+                    // Criar campo de DATA
+                    resultDiv.appendChild(document.createElement('br'));
+                    const dataContainer = document.createElement('div');
+                    dataContainer.setAttribute = ("class", "container");
+
+                    const labelData = document.createElement('label');
+                    labelData.textContent = "End date for migration/exclusion of environment: ";
+                    const dateInput = document.createElement('input');
+                    dateInput.type = 'date';
+
+                    dataContainer.appendChild(labelData);
+                    dataContainer.appendChild(dateInput);
+
+                    resultDiv.appendChild(dataContainer);
+                    
+                }else if (radio.value === 'No' && radio.id === "radioRgNo") {
+                    resultDiv.innerHTML = ''; // Limpa o conteúdo anterior
                     // Criacao do label
                     const label = document.createElement('label');
-                    label.textContent = 'E-mails of users that need access to the new Resource Group: '
+                    label.textContent = 'What is the name of the existing Resource Group? '
 
                     // Criacao do campo 
                     const inputField = document.createElement('input');
-                    inputField.setAttribute('id', 'inputNeedUsersAccess')
+                    inputField.setAttribute('id', 'inputResourceGroup')
                     inputField.setAttribute('type', 'text');
                     inputField.setAttribute('class', 'form-control');
-                    inputField.setAttribute('placeholder', 'Put all the e-mails separeted by commas (,)');
+                    inputField.setAttribute('placeholder', 'Insert Only ONE RG Name');
                     resultDiv.appendChild(label);
                     resultDiv.appendChild(inputField);
-                }else if (radio.value === 'No') {
-                    resultDiv.innerHTML = '<p> Voce escolheu nao.</p>'
                 }
             })
         })
     </script>
-
-<!-- <div class="col-12">
-    <label for="inputNeedUsersAccess" class="form-label">Emails of users that need access to the new Resource Group: </label>
-    <input type="text" class="form-control" id="inputNeedUsersAccess" placeholder="Put all the e-mails separeted by commas (,)">
-</div> -->
     
 {% endblock %}
 
