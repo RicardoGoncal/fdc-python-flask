@@ -12,48 +12,48 @@ def get():
     return render_template("cloud/cloud_view.html")
 
 
-@blp.route('/processar_form', methods=['POST'])
+@blp.route('/processar_form_cloud', methods=['POST'])
 def processar_form():
+    
+    if request.method == 'POST':
+        form = CloudModel(**dict(request.form))
 
-    form = CloudModel(**dict(request.form))
+        # form = CloudModel(**form)
 
-    # form = CloudModel(**form)
+        # print(form.inputPPM)
+        # print(form.inputTypeCust)
+        # print(form.inputProjectDemandName)
+        # print(form.inputDemandPEPCC)
+        # print(form.inputManager)
+        # print(form.inputArchitect)
+        # print(form.inputEntityResposible)
+        # print(form.inputItOt)
+        # print(form.inputSpecialReq)
+        # print(form.inputHelpText)
+        # print(form.radioRg)
 
-    # print(form.inputPPM)
-    # print(form.inputTypeCust)
-    # print(form.inputProjectDemandName)
-    # print(form.inputDemandPEPCC)
-    # print(form.inputManager)
-    # print(form.inputArchitect)
-    # print(form.inputEntityResposible)
-    # print(form.inputItOt)
-    # print(form.inputSpecialReq)
-    # print(form.inputHelpText)
-    # print(form.radioRg)
+        # print(form.inputResourceGroup )
+        # print(form.inputNeedUsersAccess )
+        # print(form.inputProjectName )
+        # print(form.inputResponsible )
+        # print(form.inputWorkType )
+        # print(form.inputRegion )
+        # print(form.radioTransition )
+        # print(form.inputDate )
 
-    # print(form.inputResourceGroup )
-    # print(form.inputNeedUsersAccess )
-    # print(form.inputProjectName )
-    # print(form.inputResponsible )
-    # print(form.inputWorkType )
-    # print(form.inputRegion )
-    # print(form.radioTransition )
-    # print(form.inputDate )
+        # print(form.radioSp)
+        # print(form.inputHLD)
+        # print(form.inputFunctionArea)
+        # print(form.inputAzureResources)
+        # print(form.radioNet)
+        # print(form.inputDescribeConfig)
 
-    # print(form.radioSp)
-    # print(form.inputHLD)
-    # print(form.inputFunctionArea)
-    # print(form.inputAzureResources)
-    # print(form.radioNet)
-    # print(form.inputDescribeConfig)
-
-    try:
-        print(form)
-        db.session.add(form)
-        db.session.commit()
-    except Exception as e:
-        db.session.rollback()
-        print(e)
+        try:
+            db.session.add(form)
+            db.session.commit()
+        except Exception as e:
+            db.session.rollback()
+            print(e)
 
     return "retornar a pagina do formulario ou a inicial"
 

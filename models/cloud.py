@@ -3,12 +3,6 @@ from db import db
 # Modelo para criar o banco de dados de Itens
 class CloudModel(db.Model):
     __tablename__ = "cloud"
-
-    # request_id = db.Column(db.Integer, primary_key=True)
-    # nome_requisitor = db.Column(db.String(80), nullable=False)
-    # disciplina = db.Column(db.String(80), nullable=False)
-    # nome_do_rg = db.Column(db.String(80), nullable=False)
-    
     # Campos comuns parte 1 - Antes da escolha do radioRg
     requestId = db.Column(db.Integer, primary_key=True)
     inputPPM = db.Column(db.Integer, nullable=True)

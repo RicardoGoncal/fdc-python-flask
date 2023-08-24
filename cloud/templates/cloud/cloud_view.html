@@ -15,7 +15,7 @@
 
     <!-- Inicio da parte de dados comuns dos usuarios -->
     <div class="container center-form">
-        <form action="/processar_form" method="POST" class="row g-3">
+        <form action="/processar_form_cloud" method="POST" class="row g-3">
             <div class="col-md-6">
                 <label for="inputPPM" class="form-label">Project PPM ID: </label>
                 <input type="number" class="form-control" id="inputPPM" name="inputPPM" step="1" min="0" pattern="{8,}" required title="Please enter at a PPM ID.">
@@ -23,7 +23,6 @@
             <div class="col-md-6">
                 <label for="inputTypeCust" class="form-label">Type of PEP/Cost Center:</label>
                 <select id="inputTypeCust" class="form-select" name="inputTypeCust" required>
-                <option selected>...</option>
                 <option>CAPEX</option>
                 <option>OPEX</option>
                 </select>
@@ -47,7 +46,6 @@
             <div class="col-md-6">
                 <label for="inputEntityResposible" class="form-label">Iron entity responsible for payment:</label>
                 <select id="inputEntityResposible" class="form-select" name="inputEntityResposible" required>
-                <option selected>...</option>
                 <option>Iron S.A</option>
                 <option>Iron Fundation</option>
                 </select>
@@ -55,7 +53,6 @@
             <div class="col-md-6">
                 <label for="inputItOt" class="form-label">Does the demand affect IT or OT?</label>
                 <select id="inputItOt" class="form-select" name="inputItOt" required>
-                <option selected>...</option>
                 <option>IT</option>
                 <option>OT</option>
                 </select>
@@ -63,24 +60,23 @@
             <div class="col-12">
                 <label for="inputSpecialReq" class="form-label">Does the demand support any special requirement?</label>
                 <select id="inputSpecialReq" class="form-select" name="inputSpecialReq" required>
-                <option selected>Choose...</option>
-                <option>...</option>
+                <option selected>opcao - 1</option>
                 </select>
             </div>
             <div class="col-12">
                 <label for="inputHelpText" class="form-label">Help us better understand your demand: </label>
-                <textarea class="form-control" id="inputHelpText" name="inputHelpText" rows="3">...</textarea>
+                <textarea class="form-control" id="inputHelpText" name="inputHelpText" rows="3" required>...</textarea>
             </div>
             <!-- Fim dados comuns dos usuarios -->
 
             <!-- Inicio da parte de dados para area de Cloud -->
             <div class="container">
                 <label for="labelRadioRg" class="form-label">Create a new Resource Group?</label><br>
-                <input class="form-check-input" type="radio" id="radioRgYes" name="radioRg" value="Yes">
+                <input class="form-check-input" type="radio" id="radioRgYes" name="radioRg" value="Yes" required>
                 <label class="form-check-label" for="radioRgYes">
                     Yes
                 </label>
-                <input class="form-check-input" type="radio" id="radioRgNo" name="radioRg" value="No">
+                <input class="form-check-input" type="radio" id="radioRgNo" name="radioRg" value="No" required>
                 <label class="form-check-label" for="radioRgNo">
                     No
                 </label>
@@ -93,11 +89,11 @@
             
             <div class="container">
                 <label for="labelRadioSp" class="form-label">Will your resource group require a Service Principal?</label><br>
-                <input class="form-check-input" type="radio" id="radioSpYes" name="radioSp" value="Yes">
+                <input class="form-check-input" type="radio" id="radioSpYes" name="radioSp" value="Yes" required>
                 <label class="form-check-label" for="radioSpYes">
                     Yes
                 </label>
-                <input class="form-check-input" type="radio" id="radioSpNo" name="radioSp" value="No">
+                <input class="form-check-input" type="radio" id="radioSpNo" name="radioSp" value="No" required>
                 <label class="form-check-label" for="radioSpNo">
                     No
                 </label>
@@ -109,7 +105,6 @@
             <div class="col-md-6">
                 <label for="inputFunctionArea" class="form-label">Functional Area - Subscription </label>
                 <select id="inputFunctionArea" class="form-select" name="inputFunctionArea" required>
-                <option selected>...</option>
                 <option>General</option>
                 <option>Brazil</option>
                 <option>EUA</option>
@@ -118,7 +113,6 @@
             <div class="col-md-6">
                 <label for="inputAzureResources" class="form-label">Azure Resources </label>
                 <select id="inputAzureResources" class="form-select" name="inputAzureResources" required>
-                <option selected>...</option>
                 <option>VM</option>
                 <option>WEB APP</option>
                 <option>SQL</option>
@@ -126,18 +120,18 @@
             </div>
             <div class="container">
                 <label for="labelRadioInternet" class="form-label">Will your resources require internet access?</label><br>
-                <input class="form-check-input" type="radio" id="radioInternetYes" name="radioNet" value="Yes">
+                <input class="form-check-input" type="radio" id="radioInternetYes" name="radioNet" value="Yes" required>
                 <label class="form-check-label" for="radioInternetYes">
                     Yes
                 </label>
-                <input class="form-check-input" type="radio" id="radioInternetNo" name="radioNet" value="No">
+                <input class="form-check-input" type="radio" id="radioInternetNo" name="radioNet" value="No" required>
                 <label class="form-check-label" for="radioInternetNo">
                     No
                 </label>
             </div>
             <div class="col-12">
                 <label for="inputDescribeConfig" class="form-label">Describe the configurations of resources above and access management </label>
-                <textarea class="form-control" id="inputDescribeConfig" name="inputDescribeConfig" rows="3">...</textarea>
+                <textarea class="form-control" id="inputDescribeConfig" name="inputDescribeConfig" rows="3" required>...</textarea>
             </div>
             <!-- Fim da parte de dados para area de Cloud -->
 
@@ -206,6 +200,7 @@
                         inputField.setAttribute('class', item.class);
                         inputField.setAttribute('name', item.name);
                         inputField.setAttribute('placeholder', item.placeholder);
+                        inputField.required = true;
                         resultDiv.appendChild(label);
                         resultDiv.appendChild(inputField);
                     });
@@ -221,6 +216,7 @@
                         select.setAttribute('id', item.id);
                         select.setAttribute('class', item.class);
                         select.setAttribute('name', item.name);
+                        select.required = true;
                         // Criacao das opcoes do select
                         item.valores.forEach(option => {
                             const optionElements = document.createElement('option');
@@ -252,6 +248,7 @@
                         radioButton.type = "radio";
                         radioButton.name = "radioTransition";
                         radioButton.class = "form-check-input";
+                        radioButton.required = true;
                         radioButton.value = item.value;
 
                         radioContainer.appendChild(radioButton);
@@ -271,6 +268,7 @@
                     const dateInput = document.createElement('input');
                     dateInput.type = 'date';
                     dateInput.name = 'inputDate';
+                    dateInput.required = true;
 
                     dataContainer.appendChild(labelData);
                     dataContainer.appendChild(dateInput);
@@ -290,6 +288,7 @@
                     inputField.setAttribute('class', 'form-control');
                     inputField.setAttribute('name', 'inputResourceGroup');
                     inputField.setAttribute('placeholder', 'Insert Only ONE RG Name');
+                    inputField.required = true;
                     resultDiv.appendChild(label);
                     resultDiv.appendChild(inputField);
                 }
