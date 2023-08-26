@@ -11,73 +11,85 @@
 </style>
 
 {% block content %}
-    <h1 class="container center-form">Network </h1>
+    <h1 class="container center-form">Network</h1>
 
+    <!-- Inicio da parte de dados comuns dos usuarios -->
     <div class="container center-form">
-        <form action="" method="POST" class="row g-3">
-            <div class="col-md-6">
-                <label for="inputPPM" class="form-label">Project PPM ID: </label>
-                <input type="text" class="form-control" id="inputPPM">
-            </div>
-            <div class="col-md-6">
-                <label for="inputTypeCust" class="form-label">Type of PEP/Cost Center:</label>
-                <select id="inputTypeCust" class="form-select">
-                <option selected>...</option>
-                <option>CAPEX</option>
-                <option>OPEX</option>
-                </select>
-            </div>
-            <div class="col-md-6">
-                <label for="inputProjectDemandName" class="form-label">Project/Demand Name: </label>
-                <input type="text" class="form-control" id="inputProjectDemandName" placeholder="Activity Description">
-            </div>
-            <div class="col-md-6">
-                <label for="inputDemandPEPCC" class="form-label">Demand PEP/Cost Center: </label>
-                <input type="text" class="form-control" id="inputDemandPEPCC" placeholder="PEP or CC">
-            </div>
-            <div class="col-md-6">
-                <label for="inputManager" class="form-label">Project/Demand Manager: </label>
-                <input type="text" class="form-control" id="inputManager" placeholder="E-mail of PM or Requestor">
-            </div>
-             <div class="col-md-6">
-                <label for="inputArchitect" class="form-label">Solution Architect: </label>
-                <input type="text" class="form-control" id="inputArchitect" placeholder="Architect E-mail">
-            </div>
-            <div class="col-md-6">
-                <label for="inputEntityResposible" class="form-label">Iron entity responsible for payment:</label>
-                <select id="inputEntityResposible" class="form-select">
-                <option selected>...</option>
-                <option>Iron S.A</option>
-                <option>Iron Fundation</option>
-                </select>
-            </div>
-            <div class="col-md-6">
-                <label for="inputItOt" class="form-label">Does the demand affect IT or OT?</label>
-                <select id="inputItOt" class="form-select">
-                <option selected>...</option>
-                <option>IT</option>
-                <option>OT</option>
+        <form action="/processar_form_network" method="POST" class="row g-3">
+            <!-- Inicio da parte de dados para area de Network -->
+            <div class="col-12">
+                <label for="inputNetworkActivity" class="form-label">What are the type of network activities required?</label>
+                <select id="inputNetworkActivity" class="form-select" name="inputNetworkActivity" required>
+                <option selected>Firewall</option>
+                <option selected>Routing & Switching</option>
+                <option selected>NetScaler</option>
+                <option selected>LTE</option>
                 </select>
             </div>
             <div class="col-12">
-                <label for="inputSpecialReq" class="form-label">Does the demand support any special requirement?</label>
-                <select id="inputSpecialReq" class="form-select">
-                <option selected>Choose...</option>
-                <option>...</option>
-                </select>
+                <label for="inputSitesDemand" class="form-label">Sites involved on this demand: </label>
+                <textarea class="form-control" id="inputSitesDemand" name="inputSitesDemand" rows="3" required>...</textarea>
             </div>
-            <div class="col-12">
-                <label for="inputHelpText" class="form-label">Help us better understand your demand: </label>
-                <textarea class="form-control" id="inputHelpText" rows="3">...</textarea>
+            <div class="container">
+                <label for="labelRadioPsr" class="form-label">Is there any previous service requests open or closed related to this request?</label><br>
+                <input class="form-check-input" type="radio" id="radioPsrYes" name="radioPsr" value="Yes" required>
+                <label class="form-check-label" for="radioPsrYes">
+                    Yes
+                </label>
+                <input class="form-check-input" type="radio" id="radioPsrNo" name="radioPsr" value="No" required>
+                <label class="form-check-label" for="radioPsrNo">
+                    No
+                </label>
             </div>
             
-
+            <!-- De acordo com a escolha do Radio Button o HTML vai mudar com um script basico em Javascript -->
+            <div id="radioPsrResult" class="col-md-12">
+                <!-- Aqui o script dinamico vai alocar o codigo html para alterar a pagina -->
+            </div>
+            <div class="col-md-6">
+                <label for="inputHLD" class="form-label">Link to the High Level Design (HLD) approved by Vale Architects on LeanIX: </label>
+                <input type="text" class="form-control" id="inputHLD" name="inputHLD" placeholder="Insert Link HLD" required>
+            </div>
+            <!-- Fim da parte de dados para area de Cloud -->
 
             <div class="col-12">
                 <button type="submit" class="btn btn-primary">Submit</button>
             </div>
         </form>
     </div>
+
+
+    <script>
+        const choiceRadios = document.querySelectorAll('input[name="radioPsr"]');
+        const resultDiv = document.getElementById('radioPsrResult');
+        
+        choiceRadios.forEach(radio => {
+            radio.addEventListener('change', () => {
+                // resultDiv.innerHTML = ''; // Limpa o conteúdo anterior
+
+                if (radio.value === 'Yes' && radio.id === "radioPsrYes"){
+
+                    resultDiv.innerHTML = ''; // Limpa o conteúdo anterior
+                    // Criacao do label
+                    const label = document.createElement('label');
+                    label.textContent = 'What are the IDs?'
+
+                    // Criacao do campo 
+                    const inputField = document.createElement('input');
+                    inputField.setAttribute('id', 'inputIDs')
+                    inputField.setAttribute('type', 'text');
+                    inputField.setAttribute('class', 'form-control');
+                    inputField.setAttribute('name', 'inputIDs');
+                    inputField.setAttribute('placeholder', 'Insert IDs');
+                    inputField.required = true;
+                    resultDiv.appendChild(label);
+                    resultDiv.appendChild(inputField);
+                }else{
+                    resultDiv.innerHTML = ''; // Limpa o conteúdo anterior
+                }
+            })
+        })
+    </script>
     
 {% endblock %}
 

@@ -16,59 +16,6 @@
     <!-- Inicio da parte de dados comuns dos usuarios -->
     <div class="container center-form">
         <form action="/processar_form_cloud" method="POST" class="row g-3">
-            <div class="col-md-6">
-                <label for="inputPPM" class="form-label">Project PPM ID: </label>
-                <input type="number" class="form-control" id="inputPPM" name="inputPPM" step="1" min="0" pattern="{8,}" required title="Please enter at a PPM ID.">
-            </div>
-            <div class="col-md-6">
-                <label for="inputTypeCust" class="form-label">Type of PEP/Cost Center:</label>
-                <select id="inputTypeCust" class="form-select" name="inputTypeCust" required>
-                <option>CAPEX</option>
-                <option>OPEX</option>
-                </select>
-            </div>
-            <div class="col-md-6">
-                <label for="inputProjectDemandName" class="form-label">Project/Demand Name: </label>
-                <input type="text" class="form-control" id="inputProjectDemandName" name="inputProjectDemandName" placeholder="Activity Description" required>
-            </div>
-            <div class="col-md-6">
-                <label for="inputDemandPEPCC" class="form-label">Demand PEP/Cost Center: </label>
-                <input type="text" class="form-control" id="inputDemandPEPCC" name="inputDemandPEPCC" placeholder="PEP or CC" required>
-            </div>
-            <div class="col-md-6">
-                <label for="inputManager" class="form-label">Project/Demand Manager: </label>
-                <input type="text" class="form-control" id="inputManager" name="inputManager"  placeholder="E-mail of PM or Requestor" required>
-            </div>
-            <div class="col-md-6">
-                <label for="inputArchitect" class="form-label">Solution Architect: </label>
-                <input type="text" class="form-control" id="inputArchitect" name="inputArchitect" placeholder="Architect E-mail" required>
-            </div>
-            <div class="col-md-6">
-                <label for="inputEntityResposible" class="form-label">Iron entity responsible for payment:</label>
-                <select id="inputEntityResposible" class="form-select" name="inputEntityResposible" required>
-                <option>Iron S.A</option>
-                <option>Iron Fundation</option>
-                </select>
-            </div>
-            <div class="col-md-6">
-                <label for="inputItOt" class="form-label">Does the demand affect IT or OT?</label>
-                <select id="inputItOt" class="form-select" name="inputItOt" required>
-                <option>IT</option>
-                <option>OT</option>
-                </select>
-            </div>
-            <div class="col-12">
-                <label for="inputSpecialReq" class="form-label">Does the demand support any special requirement?</label>
-                <select id="inputSpecialReq" class="form-select" name="inputSpecialReq" required>
-                <option selected>opcao - 1</option>
-                </select>
-            </div>
-            <div class="col-12">
-                <label for="inputHelpText" class="form-label">Help us better understand your demand: </label>
-                <textarea class="form-control" id="inputHelpText" name="inputHelpText" rows="3" required>...</textarea>
-            </div>
-            <!-- Fim dados comuns dos usuarios -->
-
             <!-- Inicio da parte de dados para area de Cloud -->
             <div class="container">
                 <label for="labelRadioRg" class="form-label">Create a new Resource Group?</label><br>
