@@ -4,7 +4,7 @@ from db import db
 class RequestModel(db.Model):
     __tablename__ = "requests"
     # Campos comuns de qualquer demanda
-    requestId = db.Column(db.Integer, primary_key=True)
+    requestId = db.Column(db.Integer, primary_key=True, autoincrement=True)
     # Estabelecer o tipo de Demanda Aberta
     demandType = db.Column(db.String(80), nullable=False)
     # Continuação dos campos comuns
@@ -20,5 +20,8 @@ class RequestModel(db.Model):
     inputHelpText = db.Column(db.Text, nullable=True)
 
     # Chaves Estrangeiras - Relação de tabelas Requests com qualquer outra
-    cloudIdFk = db.relationship("CloudModel", back_populates="cloudItem", lazy="dynamic", cascade="all, delete")
-    networkIdFk = db.relationship("NetworkModel", back_populates="networkItem", lazy="dynamic", cascade="all, delete")
+    # requestIdCloud = db.Column(db.Integer, db.ForeignKey('cloud.requestIdCloud'), nullable=False)
+
+    cloudIdFk = db.relationship("CloudModel", backref="requests", lazy=True)
+    networkIdFk = db.relationship("NetworkModel", backref="requests", lazy=True)
+    # networkIdFk = db.relationship("NetworkModel", back_populates="networkItem", lazy="dynamic", cascade="all, delete")

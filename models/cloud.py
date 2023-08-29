@@ -5,7 +5,7 @@ class CloudModel(db.Model):
     __tablename__ = "cloud"
     
     # Colunas especificas da area de Cloud
-    requestIdCloud = db.Column(db.Integer, primary_key=True)
+    requestIdCloud = db.Column(db.Integer, primary_key=True, autoincrement=True)
     radioRg = db.Column(db.String(25), nullable=True)
 
     # Campos que serão preenchidos dependendo do resultado do radioRg(Existe ou nao um RG)
@@ -27,7 +27,7 @@ class CloudModel(db.Model):
     inputDescribeConfig = db.Column(db.Text, nullable=True)
 
     # Relacionamento com a tabela request
-    cloudItem = db.relationship("RequestModel", back_populates="cloudIdFk")
+    requestIdFk = db.Column(db.Integer, db.ForeignKey('requests.requestId'), nullable=False)
 
 
 

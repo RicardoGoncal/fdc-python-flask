@@ -3,6 +3,7 @@ from flask import render_template, request, redirect
 from models import CloudModel, RequestModel
 from sqlalchemy.exc import SQLAlchemyError
 from db import db
+from time import sleep
 
 blp = Blueprint("Cloud", __name__, template_folder='templates' )
 
@@ -14,7 +15,9 @@ def cloud_view():
 @blp.route('/nova_demanda_cloud', methods=['GET','POST'])
 def nova_demanda():
     if request.method == 'POST':
-        return redirect('cloud_form')
+        global dados_nova_demanda # Variavel global pra uso
+        dados_nova_demanda = request.form # Coleta os dados do Formulario da parte de nova demanda(infos comuns)
+        return redirect('cloud_form') # leva para a parte dois do formulario
 
     demand_type = 'nova_demanda_cloud' # passa essa informacao no html de nova demanda para referenciar essa rota de cloud quando for acionada
     return render_template("general/novaDemanda.html", data=demand_type)
@@ -24,7 +27,28 @@ def nova_demanda():
 def processar_form():
     
     if request.method == 'POST':
-        form = CloudModel(**dict(request.form))
+
+        dados_demanda_cloud = request.form # Coleta os dados do Formulario da parte de cloud
+        demand_type = "cloud" # Tipo de demanda
+        
+        try:
+
+            # Gravar dados da request
+            nova_demanda = RequestModel(**dict(dados_nova_demanda))
+            nova_demanda.demandType = demand_type # Atribui o tipo de demanda que esta sendo aberta
+            db.session.add(nova_demanda)
+            db.session.commit() # grava primeiro as informações comuns do pedido para poder associar o ID com a tabela de cloud depois
+            sleep(5)
+            
+            # Gravar dados de cloud
+            cloud_form = CloudModel(**dict(dados_demanda_cloud))
+            cloud_form.requestIdFk = nova_demanda.requestId # Adiciona o valor do ID da request para a chave estrangeira na tabela de cloud
+            db.session.add(cloud_form)
+
+            db.session.commit() # Finaliza com a gravação das informações de cloud
+        except Exception as e:
+            db.session.rollback()
+            print(e)
 
         # form = CloudModel(**form)
 
@@ -56,12 +80,12 @@ def processar_form():
         # print(form.radioNet)
         # print(form.inputDescribeConfig)
 
-        try:
-            db.session.add(form)
-            db.session.commit()
-        except Exception as e:
-            db.session.rollback()
-            print(e)
+        # try:
+        #     db.session.add(form)
+        #     db.session.commit()
+        # except Exception as e:
+        #     db.session.rollback()
+        #     print(e)
 
     return "retornar a pagina do formulario ou a inicial"
 
