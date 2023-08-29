@@ -1,6 +1,6 @@
 from flask import Flask, jsonify, url_for
 from flask_migrate import Migrate
-from general.homepage import blp as HomeBlueprint
+from general.general import blp as GeneralBlueprint
 from cloud.cloud import blp as CloudBlueprint
 from network.network import blp as NetworkBlueprint
 
@@ -28,7 +28,7 @@ def create_app(db_url=None):
         db.create_all()    # Quando se inicia, ele cria o banco de acordo com os modelos criados na pasta models
 
     app.register_blueprint(CloudBlueprint)
-    app.register_blueprint(HomeBlueprint)
+    app.register_blueprint(GeneralBlueprint)
     app.register_blueprint(NetworkBlueprint)
   
     return app
