@@ -4,6 +4,7 @@ from models import NetworkModel, RequestModel
 from sqlalchemy.exc import SQLAlchemyError
 from db import db
 from time import sleep
+import random
 
 blp = Blueprint("Network", __name__, template_folder='templates' )
 
@@ -25,23 +26,29 @@ def nova_demanda():
 
 @blp.route('/processar_form_network', methods=['POST'])
 def processar_form():
-    
+    random.seed()
+
     if request.method == 'POST':
         dados_demanda_net = request.form # Coleta os dados do Formulario da parte de network
         demand_type = "network" # Tipo de demanda
+
+        # Gerar um numero para o chamado
+        numero_demanda = random.randint(1,1000)
         
         try:
-
             # Gravar dados da request
             nova_demanda = RequestModel(**dict(dados_nova_demanda))
+            nova_demanda.requestId = numero_demanda
             nova_demanda.demandType = demand_type # Atribui o tipo de demanda que esta sendo aberta
+            nova_demanda.requestIdFkNetwork = numero_demanda
             db.session.add(nova_demanda)
-            db.session.commit() # grava primeiro as informações comuns do pedido para poder associar o ID com a tabela de network depois
+            # db.session.commit() # grava primeiro as informações comuns do pedido para poder associar o ID com a tabela de network depois
             sleep(5)
             
             # Gravar dados de cloud
             net_form = NetworkModel(**dict(dados_demanda_net))
-            net_form.requestIdFk = nova_demanda.requestId # Adiciona o valor do ID da request para a chave estrangeira na tabela de network
+            net_form.requestIdNetwork = numero_demanda
+            # net_form.requestIdFk = nova_demanda.requestId # Adiciona o valor do ID da request para a chave estrangeira na tabela de network
             db.session.add(net_form)
 
             db.session.commit() # Finaliza com a gravação das informações de network
@@ -49,41 +56,5 @@ def processar_form():
             db.session.rollback()
             print(e)
 
-        # form = CloudModel(**form)
-
-        # print(form.inputPPM)
-        # print(form.inputTypeCust)
-        # print(form.inputProjectDemandName)
-        # print(form.inputDemandPEPCC)
-        # print(form.inputManager)
-        # print(form.inputArchitect)
-        # print(form.inputEntityResposible)
-        # print(form.inputItOt)
-        # print(form.inputSpecialReq)
-        # print(form.inputHelpText)
-        # print(form.radioRg)
-
-        # print(form.inputResourceGroup )
-        # print(form.inputNeedUsersAccess )
-        # print(form.inputProjectName )
-        # print(form.inputResponsible )
-        # print(form.inputWorkType )
-        # print(form.inputRegion )
-        # print(form.radioTransition )
-        # print(form.inputDate )
-
-        # print(form.radioSp)
-        # print(form.inputHLD)
-        # print(form.inputFunctionArea)
-        # print(form.inputAzureResources)
-        # print(form.radioNet)
-        # print(form.inputDescribeConfig)
-
-        # try:
-        #     db.session.add(form)
-        #     db.session.commit()
-        # except Exception as e:
-        #     db.session.rollback()
-        #     print(e)
-
-    return "retornar a pagina do formulario ou a inicial"
+    # return "retornar a pagina do formulario ou a inicial"
+    return redirect('/')

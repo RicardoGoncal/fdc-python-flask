@@ -20,7 +20,7 @@ def pedidos():
     # Faz uma query em todos os pedidos do BD
     items = RequestModel.query.all()
 
-    return render_template("general/pedidos.html", items=items)
+    return render_template("general/todos_pedidos.html", items=items)
 
 
 @blp.route('/pedidos_cloud')
