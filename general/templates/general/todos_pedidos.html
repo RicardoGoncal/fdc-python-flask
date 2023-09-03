@@ -22,17 +22,20 @@
     {% for item in items %}
         <li class="list-group-item">
             <div class="d-flex w-100 justify-content-between">
-                <h5 class="mb-1">{{ item.requestId }}</h5>
+                <h5 class="mb-1">FDC - {{ item.requestId }}</h5>
                 <small>{{ item.inputDate }}</small>
             </div>
             <small>
-                <b>Centro de Custo/PEP:</b> {{ item.inputDemandPEPCC }} |
-                <b>Solicitante:</b> Ricardo -
-                <b>Criou Grupo de Recurso:</b> {{ item.radioRg }} | 
+                <b>CC/PEP:</b> {{ item.inputDemandPEPCC }} |
+                <b>PPM:</b> {{ item.inputPPM }} |
+                <b>Solicitante:</b> Ricardo |
                 <b>Gerente do Projeto:</b> {{ item.inputManager }} |
-                <b>Arquiteto do Projeto:</b> {{ item.inputArchitect }} |
-                <b>PPM:</b> {{ item.inputPPM }} 
-    
+                <b>Tipo de Demanda:</b> {{ item.demandType }} |
+                    {% if item.demandType == 'cloud' %}
+                        <b>Id Ref. da Demanda: {{ item.requestIdFkCloud }}</b>
+                    {% else %}
+                        <b>Id Ref. da Demanda: {{ item.requestIdFkNetwork }}</b>
+                    {% endif %}
             </small>
             <div class="col-md-6">
                 <a class="btn btn-outline-info btn-sm" href="#" role="button">Exibir Detalhes do Pedido</a>

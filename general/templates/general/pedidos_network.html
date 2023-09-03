@@ -18,17 +18,21 @@
     {% for item in items %}
         <li class="list-group-item">
             <div class="d-flex w-100 justify-content-between">
-                <h5 class="mb-1">{{ item.requestId }}</h5>
-                <small>{{ item.inputDate }}</small>
+                <h5 class="mb-1">FDC NETWORK - {{ item.requestIdNetwork }}</h5>
             </div>
             <small>
-                <b>Centro de Custo/PEP:</b> {{ item.inputDemandPEPCC }} |
-                <b>Solicitante:</b> Ricardo -
-                <b>Criou Grupo de Recurso:</b> {{ item.radioRg }} | 
-                <b>Gerente do Projeto:</b> {{ item.inputManager }} |
-                <b>Arquiteto do Projeto:</b> {{ item.inputArchitect }} |
-                <b>PPM:</b> {{ item.inputPPM }} 
-    
+                {% if item.radioPsr == "Yes" %}
+                    <b>Tipo de Atv.:</b> {{ item.inputNetworkActivity }} |
+                    <b>Sites Envolvidos:</b> {{ item.inputSitesDemand }} | 
+                    <b>Requests relacionadas a demanda:</b> {{ item.radioPsr }} |
+                    <b>ID's:</b> {{ item.inputIDs }} |
+                    <b>HLD:</b> {{ item.inputHLD }} 
+                {% else %}
+                    <b>Tipo de Atv.:</b> {{ item.inputNetworkActivity }} |
+                    <b>Sites Envolvidos:</b> {{ item.inputSitesDemand }} | 
+                    <b>Requests relacionadas a demanda:</b> {{ item.radioPsr }} |
+                    <b>HLD:</b> {{ item.inputHLD }}  
+                {% endif %}
             </small>
         </li>
     {% endfor %}

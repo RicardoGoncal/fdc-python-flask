@@ -18,17 +18,25 @@
     {% for item in items %}
         <li class="list-group-item">
             <div class="d-flex w-100 justify-content-between">
-                <h5 class="mb-1">{{ item.requestId }}</h5>
-                <small>{{ item.inputDate }}</small>
+                <h5 class="mb-1">FDC CLOUD - {{ item.requestIdCloud }}</h5>
+                <small>Data de Criação do novo RG: {{ item.inputDate }}</small>
             </div>
             <small>
-                <b>Centro de Custo/PEP:</b> {{ item.inputDemandPEPCC }} |
-                <b>Solicitante:</b> Ricardo -
-                <b>Criou Grupo de Recurso:</b> {{ item.radioRg }} | 
-                <b>Gerente do Projeto:</b> {{ item.inputManager }} |
-                <b>Arquiteto do Projeto:</b> {{ item.inputArchitect }} |
-                <b>PPM:</b> {{ item.inputPPM }} 
-    
+                {% if item.radioRg == "Yes" %}
+                    <b>Novo RG: {{ item.radioRg }} |</b>
+                    <b>Nome novo RG:</b> {{ item.inputResourceGroup }} |
+                    <b>Projeto:</b> {{ item.inputProjectName }} | 
+                    <b>Responsavel:</b> {{ item.inputResponsible }} |
+                    <b>Service Principal:</b> {{ item.radioSp }} |
+                    <b>Recursos Azure: </b> {{ item.inputAzureResources }} |
+                    <b>HLD:</b> {{ item.inputHLD }} 
+                {% else %}
+                    <b>Novo RG:</b> {{ item.radioRg }} |
+                    <b>Service Principal:</b> {{ item.radioSp }} |
+                    <b>Recursos Azure: </b> {{ item.inputAzureResources }} |
+                    <b>Necessita de rede:</b> {{ item.radioNet }} |
+                    <b>HLD:</b> {{ item.inputHLD }} 
+                {% endif %}
             </small>
         </li>
     {% endfor %}
