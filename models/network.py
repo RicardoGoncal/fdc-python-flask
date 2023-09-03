@@ -17,7 +17,9 @@ class NetworkModel(db.Model):
     inputHLD = db.Column(db.String(80), nullable=True)
 
     # Relacionamento com a tabela request
-    requestIdFk = db.Column(db.Integer, db.ForeignKey('requests.requestId'), nullable=False)
+    # requestIdFk = db.Column(db.Integer, db.ForeignKey('requests.requestId'), nullable=False)
+
+    networkIdFk = db.relationship("RequestModel", backref="network", lazy=True)
 
 
     
