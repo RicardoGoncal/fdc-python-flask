@@ -5,6 +5,9 @@ from sqlalchemy.exc import SQLAlchemyError
 from db import db
 from time import sleep
 import random
+import json
+import requests
+
 
 blp = Blueprint("Cloud", __name__, template_folder='templates' )
 
@@ -35,6 +38,7 @@ def processar_form():
         # Gerar um numero para o chamado
         numero_demanda = random.randint(1,1000) # será o mesmo numero para o chamado de cloud e para requisição
         
+        # Tentativa de insercao no BD
         try:
             # Gravar dados da request
             nova_demanda = RequestModel(**dict(dados_nova_demanda))
@@ -43,8 +47,7 @@ def processar_form():
             nova_demanda.demandType = demand_type # Atribui o tipo de demanda que esta sendo aberta
             db.session.add(nova_demanda)
             # db.session.commit() # grava primeiro as informações comuns do pedido para poder associar o ID com a tabela de cloud depois
-            
-            sleep(5)
+        
 
             # Gravar dados de cloud
             cloud_form = CloudModel(**dict(dados_demanda_cloud))
@@ -55,6 +58,19 @@ def processar_form():
             db.session.commit() # Finaliza com a gravação das informações de cloud
         except Exception as e:
             db.session.rollback()
+            print(e)
+
+
+        # Tentativa de criacao de Card no DevOps
+        try:
+            # Preparação para POST no Logic Apps Azure
+            json_dict = dict(dados_nova_demanda) # Transforma dados da request em um Dict Python
+            json_dict.update(dict(dados_demanda_cloud)) # Adiciona os dados de Cloud no Dict
+            json_data = json.dumps(json_dict) # Transforma o Dict em Json para suprir o corpo da request
+
+            # Envio da Request para criação de Card no DevOps
+            requests.post('https://prod-56.eastus2.logic.azure.com:443/workflows/252b4fbf15f541deab1e14bbc04c7e75/triggers/manual/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=KPDvDV_ktYubxY-Iu928uHKTyaEa7aAPTLAanJkANnw', json=json_data)
+        except Exception as e:
             print(e)
 
     # return "retornar a pagina do formulario ou a inicial"
