@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, url_for
+from flask import Flask
 from flask_migrate import Migrate
 from general.general import blp as GeneralBlueprint
 from cloud.cloud import blp as CloudBlueprint
@@ -11,13 +11,13 @@ from dotenv import load_dotenv
 
 def create_app(db_url=None):
     app = Flask(__name__)
-    # load_dotenv()
+    load_dotenv()
 
     app.debug = True
     app.config["SQLALCHEMY_DATABASE_URI"] = db_url or os.getenv("DATABASE_URL", "sqlite:///data.db") # Usa a conexao de banco desejada, mas o default seria o sqlite
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
     app.config["PROPAGATE_EXCEPTIONS"] = True
-    app.config["SECRET_KEY"] = "hello_world"
+    # app.config["SECRET_KEY"] = "hello_world"
 
     db.init_app(app) # Inicia o contexto do banco de dados com o app criado
 

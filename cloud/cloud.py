@@ -1,5 +1,4 @@
-from flask_smorest import abort, Blueprint
-from flask import render_template, request, redirect
+from flask import render_template, request, redirect, Blueprint
 from models import CloudModel, RequestModel
 from sqlalchemy.exc import SQLAlchemyError
 from db import db
@@ -69,7 +68,7 @@ def processar_form():
             json_data = json.dumps(json_dict) # Transforma o Dict em Json para suprir o corpo da request
 
             # Envio da Request para criação de Card no DevOps
-            requests.post('https://prod-56.eastus2.logic.azure.com:443/workflows/252b4fbf15f541deab1e14bbc04c7e75/triggers/manual/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=KPDvDV_ktYubxY-Iu928uHKTyaEa7aAPTLAanJkANnw', json=json_data)
+            requests.post('logic_apps_url', json=json_data)
         except Exception as e:
             print(e)
 

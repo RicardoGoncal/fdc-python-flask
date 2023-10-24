@@ -1,0 +1,91 @@
+# Pipeline que tem a função de subir uma aplicação em Azure Container Apps na Azure
+# Troque as infos marcadas para fazer o deploy 
+
+trigger:
+- main
+
+pool:
+  vmImage: ubuntu-latest
+
+stages:
+- stage: Build
+  displayName: Build FDC app
+  jobs:
+  - job: Build_Image_Docker
+    displayName: Build job
+    steps:
+      - task: Docker@2
+        displayName: Build and Push FDC app to ACR
+        inputs:
+          command: buildAndPush
+          repository: 'NOME_REPO_ACR_AZURE'
+          containerRegistry: 'acr-fdcflask'
+          Dockerfile: '**/Dockerfile'
+          tags: 'latest'
+          
+- stage: create_container_env
+  dependsOn: [Build]
+  jobs:
+    - job: "deploy_aca_env"
+      steps:
+        - task: AzureCLI@2
+          displayName: "Create container app environment"
+          inputs:
+            azureSubscription: 'AZURE_SUBSCRIPTION_EM_CONNECTION_STRING_AZURE_DEVOPS'
+            scriptType: 'bash'
+            scriptLocation: 'inlineScript'
+            inlineScript: |
+              #!/bin/bash
+              az config set extension.use_dynamic_install=yes_without_prompt
+              az provider register --namespace Microsoft.App
+              
+              RESOURCE_GROUP="NOME_GRUPO_RECURSOS"
+              LOCATION="eastus2" 
+              LOG_ANALYTICS_WORKSPACE="NOME_LOG_ANALYTICS_WORKSPACE"
+              CONTAINERAPPS_ENVIRONMENT="NOME_CONTAINER_APPS_ENVIRONMENT"
+              
+              LOG_ANALYTICS_WORKSPACE_CLIENT_ID=`az monitor log-analytics workspace show --query customerId -g $RESOURCE_GROUP -n $LOG_ANALYTICS_WORKSPACE -o tsv | tr -d '[:space:]'`
+              LOG_ANALYTICS_WORKSPACE_CLIENT_SECRET=`az monitor log-analytics workspace get-shared-keys --query primarySharedKey -g $RESOURCE_GROUP -n $LOG_ANALYTICS_WORKSPACE -o tsv | tr -d '[:space:]'`
+              
+              az containerapp env create \
+              -n $CONTAINERAPPS_ENVIRONMENT \
+              -g $RESOURCE_GROUP \
+              --logs-workspace-id $LOG_ANALYTICS_WORKSPACE_CLIENT_ID \
+              --logs-workspace-key $LOG_ANALYTICS_WORKSPACE_CLIENT_SECRET \
+              -l $LOCATION
+            addSpnToEnvironment: true
+          
+
+- stage: Deploy_Container_App
+  dependsOn: [create_container_env]
+  jobs:
+    - job: "Deploy_App_in_ACA"
+      steps:
+        - task: AzureCLI@2
+          inputs:
+            azureSubscription: 'AZURE_SUBSCRIPTION_EM_CONNECTION_STRING_AZURE_DEVOPS'
+            scriptType: 'bash'
+            scriptLocation: 'inlineScript'
+            inlineScript: |
+              #!/bin/bash
+              az config set extension.use_dynamic_install=yes_without_prompt
+              az provider register --namespace Microsoft.App
+              
+              RESOURCE_GROUP="NOME_GRUPO_RECURSOS"
+              LOG_ANALYTICS_WORKSPACE="NOME_LOG_ANALYTICS_WORKSPACE"
+              CONTAINERAPPS_ENVIRONMENT="NOME_CONTAINER_APPS_ENVIRONMENT"
+              
+              az containerapp create \
+                --name fdcflaskapp \
+                --resource-group $RESOURCE_GROUP \
+                --environment $CONTAINERAPPS_ENVIRONMENT \
+                --image crfdcflaskdev.azurecr.io/crfdcflaskdev.azurecr.io/fdc-flask:latest \
+                --min-replicas 1 \
+                --max-replicas 2 \
+                --registry-server crfdcflaskdev.azurecr.io \
+                --registry-username crfdcflaskdev \
+                --registry-password $(acrpassword) \
+                --target-port 5000 \
+                --ingress 'external' \
+                --env-vars "DATABASE_URL=$(DATABASE_URL)"
+            addSpnToEnvironment: true
